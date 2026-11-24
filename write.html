@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write a letter · Rindu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="top-bar">
+    <a class="logo" href="index.html">Rindu</a>
+    <a class="back" href="index.html">← home</a>
+  </header>
+
+  <p class="to-line">To: <strong>(your person)</strong></p>
+
+  <!-- THE TYPEWRITER -->
+  <div class="typewriter" id="typewriter">
+
+    <!-- The paper. write.js fills sheet-text with your letters. -->
+    <div class="sheet" id="sheet">
+      <div class="stamp-spot">stamp</div>
+      <div id="sheet-text"></div>
+    </div>
+
+    <!-- Red mark where the next letter lands -->
+    <div class="type-point"></div>
+
+    <!-- The machine, drawn with CSS -->
+    <div class="machine">
+      <div class="platen"></div>
+      <div class="paper-bail"></div>
+      <div class="machine-body"><div class="keys"></div></div>
+    </div>
+
+    <!-- Invisible box that catches what you type -->
+    <textarea id="typing-input" class="typing-input"
+              autocapitalize="sentences" autocomplete="off" spellcheck="false"
+              aria-label="Write your letter"></textarea>
+  </div>
+
+  <p class="type-hint" id="type-hint">tap the paper and start typing</p>
+
+  <!-- Doesn't do anything yet. Later it saves the letter. -->
+  <button class="button">Seal &amp; send</button>
+
+  <!-- The JavaScript that makes the typewriter work -->
+  <script src="write.js"></script>
+</body>
+</html>

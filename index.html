@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rindu</title>
+  <!-- This one line loads all the styles from style.css -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- OPENING ANIMATION: covers the page, then fades away.
+       All the movement is in style.css (search "OPENING ANIMATION"). -->
+  <div id="intro" aria-hidden="true">
+    <div class="intro-envelope">
+      <div class="env-back"></div>
+      <div class="env-front-wrap"><div class="env-front"></div></div>
+      <div class="env-flap-wrap"><div class="env-flap"></div></div>
+      <img class="env-seal" src="seal.png" alt="">
+    </div>
+  </div>
+
+  <h1>Rindu</h1>
+  <p class="tagline">letters that travel</p>
+
+  <!-- The menu: each card is a link (<a>) to another page -->
+  <nav class="menu">
+
+    <a class="menu-card" href="write.html">
+      <span class="heart"></span>
+      <span class="label">Write a letter</span>
+      <span class="hint">take your time</span>
+    </a>
+
+    <a class="menu-card" href="mailbox.html">
+      <span class="heart"></span>
+      <span class="label">Mailbox</span>
+      <span class="hint">letters for you</span>
+    </a>
+
+    <a class="menu-card" href="map.html">
+      <span class="heart"></span>
+      <span class="label">In transit</span>
+      <span class="hint">watch letters travel</span>
+    </a>
+
+    <a class="menu-card" href="keepsakes.html">
+      <span class="heart"></span>
+      <span class="label">Keepsake box</span>
+      <span class="hint">every letter, saved</span>
+    </a>
+
+    <a class="menu-card" href="stamps.html">
+      <span class="heart"></span>
+      <span class="label">Stamps</span>
+      <span class="hint">your collection</span>
+    </a>
+
+    <a class="menu-card" href="people.html">
+      <span class="heart"></span>
+      <span class="label">My people</span>
+      <span class="hint">invite someone</span>
+    </a>
+
+  </nav>
+
+</body>
+</html>

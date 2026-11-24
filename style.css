@@ -1,0 +1,578 @@
+/* =========================================================
+   style.css — ONE stylesheet shared by every page.
+   Vibe: white paper, black ink, tiny red hearts, soft shadows,
+   papers scattered a little crooked on a desk.
+   ========================================================= */
+
+/* ---------- Colours: change them here, they change everywhere ---------- */
+:root {
+  --paper:  #fbfaf7;     /* clean, slightly warm white */
+  --desk:   #f1efea;     /* the "table" the papers lie on */
+  --ink:    #2b2a28;     /* soft black, like pen ink */
+  --faint:  #8a867f;     /* light grey for small text */
+  --line:   #dfe2e6;     /* ruled lines on writing paper */
+  --heart:  #c8102e;     /* the tiny red hearts */
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+            0 10px 24px rgba(0, 0, 0, 0.08);   /* soft, real-paper shadow */
+}
+/* Use a colour with var(), e.g.  color: var(--ink);  */
+
+/* ---------- Fonts ---------- */
+@font-face {
+  font-family: 'Rindu';                 /* your own handwriting font */
+  src: url('Rindu.ttf');
+}
+
+@font-face {
+  font-family: 'TypeWrite';             /* Special Elite */
+  src: url('SpecialElite-Regular.ttf');
+}
+
+/* ---------- The whole page (the desk) ---------- */
+body {
+  background-color: var(--desk);
+  background-image: url('paper.jpg');   /* your texture */
+  background-repeat: repeat;
+  background-size: 480px;
+  background-blend-mode: multiply;
+  color: var(--ink);
+  font-family: 'TypeWrite', monospace;
+  text-align: center;
+  margin: 0;
+  padding: 48px 20px;
+}
+
+/* ---------- Home page title ---------- */
+h1 {
+  font-family: 'Rindu', serif;
+  font-size: 100px;
+  font-weight: normal;
+  letter-spacing: 2px;
+  margin: 0 0 -6px 0;
+}
+
+.tagline {
+  font-size: 15px;
+  letter-spacing: 3px;                  /* spaced-out small type = calm, elegant */
+  color: var(--faint);
+  margin-top: 0;
+}
+
+/* A tiny red heart. Put <span class="heart"></span> anywhere. */
+.heart::before {
+  content: "♥";
+  color: var(--heart);
+  font-size: 0.6em;
+}
+
+/* ---------- Home page menu: little notecards scattered on the desk ---------- */
+.menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 28px;
+  max-width: 720px;
+  margin: 48px auto 0 auto;
+}
+
+.menu-card {
+  display: block;
+  background: var(--paper);
+  padding: 28px 16px 24px 16px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow);
+  transform: rotate(-1.2deg);           /* a little crooked, like real paper */
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+/* Every second card tilts the other way, so they look scattered */
+.menu-card:nth-child(even) { transform: rotate(1deg); }
+.menu-card:nth-child(3n)   { transform: rotate(-0.4deg); }
+
+.menu-card:hover {
+  transform: rotate(0deg) translateY(-4px);   /* straightens and lifts */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06),
+              0 16px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* The little heart on top of each home card */
+.menu-card .heart { display: block; font-size: 22px; margin-bottom: 4px; }
+
+.label {
+  display: block;
+  font-family: 'Rindu', serif;
+  font-size: 30px;
+}
+
+.hint {
+  display: block;
+  font-size: 13px;
+  color: var(--faint);
+  margin-top: 6px;
+}
+
+/* ---------- Top bar on every inner page ---------- */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 700px;
+  margin: 0 auto 30px auto;
+}
+
+.logo {
+  font-family: 'Rindu', serif;
+  font-size: 40px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.back {
+  color: var(--faint);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.back:hover { color: var(--ink); }
+
+h2 {
+  font-family: 'Rindu', serif;
+  font-weight: normal;
+  font-size: 44px;
+  margin-bottom: 4px;
+}
+
+.page-intro {
+  color: var(--faint);
+  font-size: 14px;
+  margin-top: 0;
+}
+
+/* ---------- A dashed box = "real feature goes here later" ---------- */
+.placeholder {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 30px;
+  border: 1px dashed #c9c5bd;
+  color: var(--faint);
+  font-size: 14px;
+}
+
+/* ---------- Button: black ink ---------- */
+.button {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 15px;
+  letter-spacing: 2px;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.button:hover { background: #000; }
+
+/* ---------- Write page: the typewriter ----------
+   The "type point" never moves. The PAPER moves instead:
+   one letter left for every key, and back to the start
+   (plus up one line) at the end of each line.            */
+
+.to-line {
+  font-size: 14px;
+  color: var(--faint);
+}
+
+.typewriter {
+  position: relative;
+  max-width: 900px;
+  height: min(68vh, 620px);
+  margin: 10px auto 24px auto;
+  overflow: hidden;                     /* hides the paper outside this window */
+  cursor: text;
+  font-family: 'TypeWrite', monospace;  /* typewriter fonts are "monospace":
+                                           every letter is the same width */
+  font-size: clamp(22px, 3.4vw, 32px);  /* big = zoomed in. Smaller on phones */
+  --lh: 1.8em;                          /* height of one typed line */
+  --pad-x: 2.5em;                       /* paper margin left/right */
+  --pad-top: 2.5em;                     /* paper margin at the top */
+  --type-y: 60%;                        /* how far down the type point sits */
+  border-radius: 6px;
+}
+
+/* The sheet of paper. JavaScript sets --col and --line,
+   and this transform slides the paper to the right spot. */
+.sheet {
+  position: absolute;
+  left: 50%;
+  top: var(--type-y);
+  width: calc(var(--cols) * 1ch + 2 * var(--pad-x));   /* 1ch = one letter wide */
+  min-height: 400%;
+  padding: var(--pad-top) var(--pad-x);
+  box-sizing: border-box;
+  background-color: var(--paper);
+  background-image: url('paper.jpg');
+  background-size: 480px;
+  background-blend-mode: multiply;
+  box-shadow: var(--shadow);
+  text-align: left;
+  transform: translate(
+    calc(-1 * (var(--pad-x) + var(--col) * 1ch)),
+    calc(-1 * (var(--pad-top) + (var(--line) + 1) * var(--lh)))
+  );
+  /* No "transition" here on purpose: the paper JUMPS, it doesn't glide.
+     That's what makes it feel choppy and mechanical. */
+}
+
+/* Carriage return: the one time the paper glides (fast, then slows down) */
+.sheet.returning {
+  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* The thin line printed at the top of the paper */
+.sheet::before {
+  content: "";
+  display: block;
+  border-top: 1px solid #9a968f;
+  margin-bottom: 0.6em;
+}
+
+.sheet .stamp-spot {
+  top: 0.4em;
+  right: 0.6em;
+  width: 1.6em;
+  height: 1.9em;
+  font-size: 10px;
+}
+
+.sheet-line {
+  height: var(--lh);
+  line-height: var(--lh);
+  white-space: pre;                     /* keeps spaces exactly as typed */
+}
+
+/* Each typed letter. JavaScript gives every letter its own tiny
+   random darkness, height and tilt, like a real typewriter strike. */
+.ch {
+  display: inline-block;
+  opacity: var(--o);
+  transform: translateY(var(--dy)) rotate(var(--r));
+}
+
+.ch.fresh { animation: ink 70ms steps(2) both; }   /* new letters "strike" on */
+
+@keyframes ink {
+  from { opacity: 0; transform: translateY(-0.12em) rotate(var(--r)); }
+}
+
+/* The little red mark showing where the next letter will land */
+.type-point {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--type-y) - 0.15em);
+  width: 1ch;
+  height: 2px;
+  background: var(--heart);
+  z-index: 1;
+  animation: blink 1s steps(2) infinite;   /* steps(2) = on/off, no fading */
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+/* The machine: a dark roller and the pale blue body below the type line */
+.machine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--type-y) + 0.35em);
+  bottom: 0;
+  z-index: 2;                           /* sits on top of the paper */
+  pointer-events: none;                 /* clicks go through to the paper */
+}
+
+.platen {
+  height: 1.4em;
+  margin: 0 -10px;
+  border-radius: 0.7em;
+  background: linear-gradient(#4a4e54, #1c1e21 55%, #3b3e43);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+}
+
+.paper-bail {
+  position: absolute;
+  top: 0.55em;
+  left: 8%;
+  right: 8%;
+  height: 3px;
+  background: linear-gradient(#f4f6f8, #9aa3ab);   /* thin silver rod */
+  border-radius: 2px;
+}
+
+.machine-body {
+  position: absolute;
+  top: 1.1em;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 22px 22px 0 0;
+  background: linear-gradient(#c7d3dc, #aebdc9);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* A row of round keys, drawn with a repeating circle pattern */
+.keys {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 0.5em;
+  height: 1.6em;
+  background-image: radial-gradient(circle,
+    #e3e9ee 0 38%,                      /* the key top */
+    #2f3439 40% 47%,                    /* its dark rim */
+    transparent 49%);
+  background-size: 1.9em 1.6em;
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+/* The whole window jolts on each keystroke */
+.typewriter.strike { animation: strike 90ms steps(2); }
+
+@keyframes strike {
+  50% { transform: translateY(2px); }
+}
+
+/* The real text box. It's invisible, but it catches the keyboard
+   (including the iPhone keyboard) and feeds the letters to JavaScript. */
+.typing-input {
+  position: absolute;
+  left: 50%;
+  top: var(--type-y);
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  font-size: 16px;                      /* 16px+ stops iPhones zooming in */
+  border: none;
+  resize: none;
+}
+
+.type-hint {
+  font-size: 13px;
+  color: var(--faint);
+  margin: -10px 0 20px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typewriter.strike,
+  .ch.fresh,
+  .type-point { animation: none; }
+  .sheet.returning { transition: none; }
+}
+
+.stamp-spot {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 60px;
+  height: 72px;
+  border: 1px dashed #c9c5bd;
+  color: var(--faint);
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+}
+
+/* ---------- Mailbox: envelopes ---------- */
+.envelope {
+  max-width: 480px;
+  margin: 24px auto;
+  padding: 28px 24px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  font-size: 13px;
+  color: var(--faint);
+  transform: rotate(-0.8deg);
+}
+
+.envelope:nth-child(even) { transform: rotate(0.6deg); }
+
+.envelope strong {
+  display: block;
+  font-family: 'Rindu', serif;
+  font-weight: normal;
+  font-size: 28px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.envelope.sealed { opacity: 0.55; }     /* not arrived yet = faded */
+
+/* ---------- Map page: the travel line ---------- */
+.route {
+  position: relative;
+  max-width: 500px;
+  height: 4px;
+  margin: 60px auto 20px auto;
+  border-top: 2px dashed var(--ink);
+}
+
+.route .moving-letter {
+  position: absolute;
+  top: -26px;
+  left: 40%;                            /* 40% of the way there */
+  font-size: 32px;
+  transform: translateX(-50%);
+}
+
+.route-ends {
+  display: flex;
+  justify-content: space-between;
+  max-width: 500px;
+  margin: 0 auto;
+  font-family: 'Rindu', serif;
+  font-size: 24px;
+}
+
+/* ---------- Stamps page ---------- */
+.stamp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 20px;
+  max-width: 600px;
+  margin: 30px auto;
+}
+
+.stamp {
+  background: var(--paper);
+  border: 3px dotted var(--desk);       /* dotted edge, like a real stamp */
+  outline: 1px solid #e4e1db;
+  padding: 20px 10px;
+  font-size: 13px;
+  box-shadow: var(--shadow);
+}
+
+.stamp .icon { display: block; font-size: 40px; margin-bottom: 6px; }
+
+.stamp.locked { opacity: 0.5; }
+
+/* =========================================================
+   OPENING ANIMATION (only used on index.html)
+   0.0s  envelope fades in
+   0.7s  wax seal pops off
+   1.2s  top flap swings open
+   2.0s  envelope zooms toward you and everything fades away
+   ========================================================= */
+
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--desk);
+  background-image: url('paper.jpg');
+  background-size: 480px;
+  background-blend-mode: multiply;
+  animation: intro-out 0.8s ease-in 2s forwards;
+}
+
+.intro-envelope {
+  position: relative;
+  width: min(80vw, 420px);
+  aspect-ratio: 3 / 2;
+  perspective: 1000px;
+  animation: envelope-in 0.6s ease-out,
+             envelope-zoom 0.8s ease-in 2s forwards;
+}
+
+.env-back,
+.env-front,
+.env-flap {
+  position: absolute;
+  background-image: url('paper.jpg');
+  background-size: 480px;
+  background-blend-mode: multiply;
+}
+
+.env-back {
+  inset: 0;
+  background-color: #ebe8e2;            /* inside: a touch darker */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05),
+              0 16px 36px rgba(0, 0, 0, 0.12);
+}
+
+.env-front-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  filter: drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.08));
+}
+
+.env-front {
+  inset: 0;
+  background-color: #fbfaf7;
+  clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+}
+
+.env-flap-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 62%;
+  z-index: 3;
+  transform-origin: top;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+  animation: flap-open 0.8s ease-in-out 1.2s forwards;
+}
+
+.env-flap {
+  inset: 0;
+  background-color: #f5f3ef;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.env-seal {
+  position: absolute;
+  top: 62%;
+  left: 50%;
+  width: 22%;
+  z-index: 4;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.3));
+  animation: seal-off 0.5s ease-in 0.7s forwards;
+}
+
+@keyframes envelope-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes seal-off {
+  0%   { transform: translate(-50%, -50%) scale(1); }
+  30%  { transform: translate(-50%, -50%) scale(1.12); }
+  100% { transform: translate(-50%, -50%) scale(0.6); opacity: 0; }
+}
+
+@keyframes flap-open {
+  from { transform: rotateX(0deg); }
+  to   { transform: rotateX(180deg); }
+}
+
+@keyframes envelope-zoom {
+  to { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes intro-out {
+  to { opacity: 0; visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #intro { display: none; }
+}
